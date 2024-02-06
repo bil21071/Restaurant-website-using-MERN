@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In and Sign Up Form</title>
+  <link rel="stylesheet" href="login.css">
+  <script src="https://kit.fontawesome.com/51ab17fb6c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <h1 id="title">Register</h1>
+      <form>
+        <div class="input-group">
+          <div class="input-field" id="nameField">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" placeholder="Name" required minlength="3" maxlength="15">
+          </div>
+
+          <div class="input-field" id="emailField">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" placeholder="Email" required>
+          </div>
+
+          <div class="input-field" id="passwordField">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="Password" required minlength="6" maxlength="15">
+          </div>
+          <div class="input-field"> 
+            <label for="roles">Choose a Role</label>
+            <select name="roles" id="roles">
+              <optgroup>
+                <option value="customer">Customer</option>
+                <option value="manager">Manager</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-field">
+          <div class="button-container">
+            <button type="button" id="signupBtn">Register</button>
+            <button type="button" id="signinBtn" class="disable">Log In</button>
+          </div>
+        </div>
+        <div class="btn-Submit">
+          <div class="button-submit">
+            <a href="index.html">
+              <button type="button" id="Submit">Submit</button>
+            </a>
+          </div>  
+        </div>
+        
+      </form>
+    </div>
+  </div>
+  <script>
+    let signupBtn = document.getElementById("signupBtn");
+    let signinBtn = document.getElementById("signinBtn");
+    let nameField = document.getElementById("nameField");
+    let title = document.getElementById("title");
+
+    signinBtn.onclick = function () {
+      nameField.style.maxHeight = "0";
+      title.innerHTML = "Log In";
+      signupBtn.classList.add("disable");
+      signinBtn.classList.remove("disable");
+    }
+    signupBtn.onclick = function () {
+      nameField.style.maxHeight = "60px";
+      title.innerHTML = "Register";
+      signupBtn.classList.remove("disable");
+      signinBtn.classList.add("disable");
+    }
+    document.getElementById('Submit').addEventListener('click', function (event) {
+      var username = document.getElementById('nameField').querySelector('input').value.trim();
+      var email = document.getElementById('emailField').querySelector('input').value.trim();
+      var password = document.getElementById('passwordField').querySelector('input').value.trim();
+
+      // Check if the username, email, and password fields are filled
+      var usernameFilled = username !== '';
+      var emailFilled = email !== '';
+      var passwordFilled = password !== '';
+
+      // Check if the email field has a valid format
+      var emailFormatValid = validateEmail(email);
+
+      // Check if the username meets the length requirements
+      var usernameLengthValid = username.length >= 3 && username.length <= 15;
+
+      // Check if the password meets the length requirements
+      var passwordLengthValid = password.length >= 6 && password.length <= 15;
+
+      if (usernameFilled && emailFilled && passwordFilled && emailFormatValid && usernameLengthValid && passwordLengthValid) {
+        // Redirect to the desired page
+        window.location.href = 'index.html';
+      } else {
+        // Handle the case where required fields are not filled or have invalid formats
+        var errorMessage = 'Please fill in the required fields with valid formats:\n';
+        if (!usernameFilled || !usernameLengthValid) errorMessage += '- Username (length: 3 to 15 characters)\n';
+        if (!emailFilled || !emailFormatValid) errorMessage += '- Email\n';
+        if (!passwordFilled || !passwordLengthValid) errorMessage += '- Password (length: 6 to 15 characters)\n';
+
+        alert(errorMessage);
+        // Prevent the default form submission behavior
+        event.preventDefault();
+      }
+    });
+
+    // Function to validate email format
+    function validateEmail(email) {
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+  </script>
+</body>
+</html>
